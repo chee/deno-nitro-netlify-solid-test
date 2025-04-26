@@ -1,47 +1,43 @@
 import {For, mapArray, type Component} from "solid-js"
 import createRepo from "./repo.ts"
-import {useDocument} from "solid-automerge"
 import type {AutomergeUrl} from "@automerge/automerge-repo"
+import {makeDocumentProjection} from "solid-automerge"
 
+const repo = createRepo()
+const handle = await repo.find<{
+	title: string
+	items: {title: string; complete?: Date}[]
+}>("automerge:eotaLiXw74by35jy5JEti3k1NEr" as AutomergeUrl)
 const App: Component = () => {
-	const repo = createRepo()
-
-	const [doc, handle] = useDocument<{
+	const doc = makeDocumentProjection<{
 		title: string
-		items: AutomergeUrl[]
-	}>("automerge:2FDkQ385GeeVP5JRenfqb4Xw3uDq" as AutomergeUrl, {repo})
-
-	const items = mapArray(
-		() => doc()?.items,
-		item => useDocument<{title: string; complete?: Date}>(item, {repo})
-	)
+		items: {title: string; complete?: Date}[]
+	}>(handle as any)
 
 	return (
 		<div>
-			<pre>{JSON.stringify(handle)}</pre>
-			<h1>{doc()?.title}</h1>
+			<h1>{doc?.title}</h1>
 			<ul>
-				<For each={items()}>
-					{([item, itemHandle], i) => {
-						console.log(item())
+				<For each={doc.items}>
+					{(item, i) => {
 						return (
 							<li>
 								<input
 									type="checkbox"
-									checked={!!item()?.complete}
+									checked={!!item?.complete}
 									onChange={e => {
-										handle()?.change(project => {
+										handle?.change(project => {
 											const item = project.items[i()]
 											if (!item) return
 											if (e.currentTarget.checked) {
-												item().complete = new Date()
+												item.complete = new Date()
 											} else {
-												delete item().complete
+												delete item.complete
 											}
 										})
 									}}
 								/>
-								{item()?.title}
+								{item?.title}
 							</li>
 						)
 					}}

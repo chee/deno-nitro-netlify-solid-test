@@ -10,3 +10,6 @@ BUILDING = "true"
 [dev]
 command = "deno task dev"
 targetPort = 3000
+
+[dev.environment]
+BUILDING = ""

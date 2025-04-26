@@ -4,7 +4,6 @@ import {
 	PeerMetadata,
 	cbor,
 } from "@automerge/automerge-repo/slim"
-import WebSocket from "isomorphic-ws"
 
 import {
 	FromClientMessage,
