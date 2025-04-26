@@ -17,6 +17,9 @@ export default defineConfig({
 					dir: ".output",
 					publicDir: ".output/public",
 				},
+				routeRules: {
+					"/**": {cache: {maxAge: 60 * 60}},
+				},
 			}
 		),
 	],
