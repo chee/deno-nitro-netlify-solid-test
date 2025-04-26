@@ -1,7 +1,8 @@
-
 [build]
 command = "deno task build"
 publish = "dist/client"
+[build.environment]
+BUILDING = "true"
 
 [dev]
 command = "deno task dev"
