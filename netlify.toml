@@ -1,0 +1,7 @@
+
+[build]
+command = "deno task build"
+publish = "dist/client"
+
+[dev]
+command = "deno task dev"

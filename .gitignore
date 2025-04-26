@@ -1,0 +1,7 @@
+# build artifacts
+node_modules/
+.vite/
+.output/
+dist/
+# Local Netlify folder
+.netlify
