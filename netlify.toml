@@ -1,6 +1,9 @@
+"$schema" = "https://schemastore.netlify.app/netlify-toml.json?lol"
+
 [build]
 command = "deno task build"
 publish = "dist/client"
+
 [build.environment]
 BUILDING = "true"
 

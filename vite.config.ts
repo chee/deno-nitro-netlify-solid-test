@@ -23,6 +23,9 @@ export default defineConfig({
 					dir: ".output",
 					publicDir: ".output/public",
 				},
+				prerender: {
+					routes: ["/"],
+				},
 			}
 		),
 	],
