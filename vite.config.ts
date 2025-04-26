@@ -13,14 +13,15 @@ export default defineConfig({
 				entryServer: "src/main.server.tsx",
 			},
 			{
+				wasm: {
+					esmImport: true,
+					lazy: true,
+				},
 				preset: "netlify-edge",
 				compatibilityDate: "2025-04-01",
 				output: {
 					dir: ".output",
 					publicDir: ".output/public",
-				},
-				prerender: {
-					routes: ["/"],
 				},
 			}
 		),

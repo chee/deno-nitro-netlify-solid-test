@@ -5,6 +5,7 @@ import type {AutomergeUrl} from "@automerge/automerge-repo"
 
 const App: Component = () => {
 	const repo = createRepo()
+
 	const [doc, handle] = useDocument<{
 		title: string
 		items: AutomergeUrl[]
