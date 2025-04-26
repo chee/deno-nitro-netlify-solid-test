@@ -5,3 +5,4 @@ publish = "dist/client"
 
 [dev]
 command = "deno task dev"
+targetPort = 3000

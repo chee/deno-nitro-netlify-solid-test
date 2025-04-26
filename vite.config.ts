@@ -1,9 +1,11 @@
 import {defineConfig} from "vite"
 import solidPlugin from "vite-plugin-solid"
 import nitro from "@analogjs/vite-plugin-nitro"
+import wasm from "vite-plugin-wasm"
 
 export default defineConfig({
 	plugins: [
+		wasm(),
 		solidPlugin({ssr: true}),
 		nitro(
 			{
@@ -17,8 +19,8 @@ export default defineConfig({
 					dir: ".output",
 					publicDir: ".output/public",
 				},
-				routeRules: {
-					"/**": {cache: {maxAge: 60 * 60}},
+				prerender: {
+					routes: ["/"],
 				},
 			}
 		),
