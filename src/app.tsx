@@ -1,24 +1,30 @@
-import {For, mapArray, type Component} from "solid-js"
-import createRepo from "./repo.ts"
-import type {AutomergeUrl} from "@automerge/automerge-repo"
-import {makeDocumentProjection} from "solid-automerge"
+import {For, type Component} from "solid-js"
+import {createStore} from "solid-js/store"
+import {makePersisted} from "@solid-primitives/storage"
 
-const repo = createRepo()
-const handle = await repo.find<{
-	title: string
-	items: {title: string; complete?: Date}[]
-}>("automerge:eotaLiXw74by35jy5JEti3k1NEr" as AutomergeUrl)
 const App: Component = () => {
-	const doc = makeDocumentProjection<{
-		title: string
-		items: {title: string; complete?: Date}[]
-	}>(handle as any)
+	const [project, update] = makePersisted(
+		createStore<{
+			title: string
+			items: {title: string; complete?: Date}[]
+		}>({
+			title: "My project",
+			items: [
+				{title: "Item 1"},
+				{title: "Item 2", complete: new Date()},
+				{title: "Item 3"},
+			],
+		}),
+		{
+			name: "project",
+		}
+	)
 
 	return (
 		<div>
-			<h1>{doc?.title}</h1>
+			<h1>{project.title}</h1>
 			<ul>
-				<For each={doc.items}>
+				<For each={project.items}>
 					{(item, i) => {
 						return (
 							<li>
@@ -26,15 +32,11 @@ const App: Component = () => {
 									type="checkbox"
 									checked={!!item?.complete}
 									onChange={e => {
-										handle?.change(project => {
-											const item = project.items[i()]
-											if (!item) return
-											if (e.currentTarget.checked) {
-												item.complete = new Date()
-											} else {
-												delete item.complete
-											}
-										})
+										if (e.currentTarget.checked) {
+											update("items", i(), "complete", new Date())
+										} else {
+											update("items", i(), "complete", undefined)
+										}
 									}}
 								/>
 								{item?.title}
